@@ -1,0 +1,10 @@
+[
+  {
+    "groupName": "SITA",
+    "precedence": 1
+  },
+  {
+    "groupName": "Registrant",
+    "precedence": 2
+  }
+]

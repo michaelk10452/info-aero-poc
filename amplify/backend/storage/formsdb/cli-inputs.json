@@ -1,0 +1,10 @@
+{
+  "resourceName": "formsdb",
+  "tableName": "FormsTable",
+  "partitionKey": {
+    "fieldName": "formId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

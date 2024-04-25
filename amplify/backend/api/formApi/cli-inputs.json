@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "paths": {
+    "/applications": {
+      "name": "/applications",
+      "lambdaFunction": "formHandler",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
+    }
+  }
+}
