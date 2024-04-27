@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is designed to modernize, update, and streamline the existing Information.aero site that runs on Drupal by transitioning it to a more scalable and secure AWS ecosystem. By leveraging Amazon Web Services (AWS), the system enhances performance, scalability, and manageability.
+This project, conceptualized and developed by Michael Kurdahi, is designed to modernize, update, and streamline the existing Information.aero site that runs on Drupal by transitioning it to a more scalable and secure AWS ecosystem. By leveraging Amazon Web Services (AWS), the system enhances performance, scalability, and manageability.
 
 ## AWS Services Used
 
