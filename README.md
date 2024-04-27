@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# Info-Aero POC Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is designed to modernize, update, and streamline the existing Information.aero site that runs on Drupal by transitioning it to a more scalable and secure AWS ecosystem. By leveraging Amazon Web Services (AWS), the system enhances performance, scalability, and manageability.
 
-In the project directory, you can run:
+## AWS Services Used
 
-### `npm start`
+- **Amazon Cognito**: Manages user authentication and handles user groups for different access levels.
+![Cognito](src/Cognito.png)
+- **AWS Lambda and Amazon API Gateway**: Serve as the backend, processing API requests to and from the front end.
+![API Gateway](src/APIGateway.png)
+- **Amazon DynamoDB**: Provides a scalable and managed NoSQL database for storing application data.
+![Form Page](src/DynamoDB.png)
+- **AWS Amplify**: Integrates frontend and backend components, simplifies deployments, and manages hosting.
+![Amplify](src/AmplifyDashboard.png)
+![Amplify Backend](src/AmplifyBackend.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## React for Frontend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- The frontend is built using React, offering a dynamic user experience and efficient updates to the UI in response to data changes.
 
-### `npm test`
+## GitHub for Version Control and CI/CD Integration
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+AWS Amplify integrates seamlessly with GitHub to provide version control along with continuous integration and deployment (CI/CD) capabilities. This setup ensures efficient management of the application's codebase and facilitates automated processes for building and deploying applications.
 
-### `npm run build`
+### Frontend Updates
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+When changes to the frontend are pushed to a remote repository on GitHub, AWS Amplify automatically detects these changes. The CI/CD pipeline configured within Amplify then triggers a new build and deployment process. This automated workflow ensures that any updates made to the frontend are immediately reflected in the live application, without the need for manual interventions.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend Updates
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+For backend updates involving AWS services like Lambda functions or API Gateway configurations, the process requires an additional step with the Amplify CLI. While frontend updates utilize a direct `git push` to trigger builds, backend changes need to be deployed using the `amplify push` command. This command synchronizes the local changes with the cloud, updating the necessary AWS resources. Once these changes are pushed, Amplify automatically triggers a rebuild of the backend resources to apply the updates.
 
-### `npm run eject`
+It's crucial to differentiate between the triggers for frontend and backend updates:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend**: Automatically rebuilds upon `git push` to the GitHub repository. This includes changes to static assets, React components, stylesheets, and other frontend-related files.
+- **Backend**: Requires an `amplify push` for changes in configurations and resources (such as Lambda, API Gateway, Cognito) to be updated in AWS. After the push, Amplify handles the deployment and updates the cloud resources accordingly.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This CI/CD integration not only streamlines the development process but also enhances the overall deployment workflow, ensuring that both frontend and backend components of the application are consistently up-to-date and in sync with the version-controlled source code. This mechanism is crucial for maintaining the reliability and integrity of the application across different development stages and production environments.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Setup Instructions
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **AWS Account**: Ensure that all AWS services are set up under a single AWS account for ease of management. These services can be configured to work with other AWS accounts as needed.
 
-## Learn More
+2. **Amplify Initialization**:
+   - Run `amplify init` in the project directory to initialize AWS Amplify, which configures the environment and sets up AWS services.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. **Authentication Setup**:
+   - Use `amplify add auth` to configure Amazon Cognito for user authentication. This includes setting up user groups such as 'SITA' and 'Registrant'.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. **API Configuration**:
+   - Execute `amplify add api` to set up REST APIs using Amazon API Gateway linked with AWS Lambda for server-side logic.
 
-### Code Splitting
+5. **Database Configuration**:
+   - Use `amplify add storage` to integrate Amazon DynamoDB for managing application data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+6. **Local Testing**:
+   - Use `npm start` to run your React application locally. This allows you to test the user interface and its interactions with the backend in a development environment.
 
-### Analyzing the Bundle Size
+7. **Deploying the Application**:
+   - Deploy the application using `amplify publish` which builds the entire front and backend resources and deploys them in AWS.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## User Access and Functionality
 
-### Making a Progressive Web App
+### Differentiated Access Control
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Our application implements robust access control that differentiates between two types of users: SITA group users and Registrants. This is facilitated through AWS Cognito, which manages user identities and groups.
 
-### Advanced Configuration
+- **SITA Group Users**: Users belonging to the SITA group have administrative access which allows them to view all applications submitted in the database. This comprehensive access is useful for administrators who need to oversee the entire scope of submissions.
+  
+- **Registrants**: Regular users or Registrants have more restricted access. They can only view applications they have personally submitted. This is implemented using AWS Cognito's claims['sub'], which acts as a unique identifier (ownerId) for each user. This ensures that users can consistently submit and track their applications across different sessions and even if they use different email addresses, as long as they are connected to the same user account.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+### Application Pages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Below are screenshots of the application that demonstrate the user interface for both SITA and Registrant users:
 
-### `npm run build` fails to minify
+- **Form Submission Page**: This page is accessible to all users for submitting new applications. It is straightforward and user-friendly, ensuring that users can easily provide all necessary information.
+![Form Page](src/Form%20Page.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **SITA Applications Overview**: This page is exclusively accessible to users in the SITA group. It displays all the applications from different users, providing SITA members with a comprehensive view of all submissions. If you would like to view it on the live site as a **SITA User** with the link provided at the end of this README, use these credentials
+    - **Email: 123@abc.com**
+    - **Password: `1234567**
+![SITA Application Page](<src/SITA Applications Page.png>)
+
+- **Registrant Applications Overview**: This page is tailored for Registrant users. It displays only the applications submitted by the logged-in user, leveraging the `claims['sub']` from AWS Cognito as a unique identifier to fetch and show only the user's submissions. This feature allows Registrants to track their submitted applications effectively, providing a personalized user experience. If you would like to view it on the live site as a **Registrant** with the link provided at the end of this README, use these credentials
+    - **Email: 987@example.com**
+    - **Password: `1234567**
+![Registrant Page](<src/Registrant Page.png>)
+
+
+These pages are designed to cater to the specific needs of different user groups, ensuring that all users can interact efficiently with the application while adhering to the necessary access controls established through AWS Cognito.
+
+### Technical Implementation
+
+For the backend logic, please refer to the `amplify/backend/function/src/index.js` file in the GitLab repository, where you can see how we've implemented these controls using AWS Lambda and API Gateway. The function leverages the AWS SDK to interact with DynamoDB, checking user group membership and setting permissions accordingly.
+
+## Conclusion
+
+This POC demonstrates a robust application capable of replacing the current Drupal-based system, offering a modern, scalable, and secure platform. By following the setup instructions and utilizing AWS and React, the Info-Aero system is well-positioned for future growth and enhancements.
+
+Here is the live link to be able to view the application currently being hosted on Amplify: https://main.d31pmbebzbo2jd.amplifyapp.com/
